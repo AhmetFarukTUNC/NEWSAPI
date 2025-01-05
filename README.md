@@ -1,23 +1,24 @@
 # NEWSAPI
 We took datas about sport news and printed.
 
-# Haber Verisi Çekme Uygulaması
+# News Fetching Application
 
-Bu proje, bir API'den haber verilerini çekerek konsola yazdıran basit bir Python uygulamasıdır. Proje, haber başlıklarını ve açıklamalarını kullanıcıya sunar.
+This project is a simple Python application that fetches news data from an API and displays it on the console. The application shows news titles and descriptions.
 
-## Özellikler
-- Haber başlıklarını ve açıklamalarını çekme
-- Konsola yazdırma
+## Features
+- Fetching news titles and descriptions
+- Displaying the fetched data on the console
 
 ---
 
-## Gereksinimler
-Bu projeyi çalıştırmadan önce aşağıdaki yazılımları ve kütüphaneleri kurduğunuzdan emin olun:
-- Python 3.8 veya üzeri
-- Gerekli Python kütüphaneleri
+## Requirements
+Before running this project, ensure you have the following installed:
+- Python 3.8 or higher
+- Required Python libraries like requests
 
-### Python Kütüphaneleri
-Proje bağımlılıklarını yüklemek için şu komutu çalıştırabilirsiniz:
+### Python Libraries
+Install the project dependencies using the following command:
 ```bash
-pip install -r requirements.txt
+py -m pip install requests
+
 
