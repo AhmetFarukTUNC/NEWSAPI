@@ -29,4 +29,4 @@
 
 1. Clone the repository:  
 ```bash
-git clone https://github.com/username/colorful-news.git
+git clone https://github.com/AhmetFarukTUNC/NEWSAPI
