@@ -14,11 +14,16 @@
 
 ## 🖼️ Project Screenshots
 
+
+![News Cards](2.png)
+ 
+
+
  
 ![Home Page](1.png)
 
   
-![News Cards](2.png)
+
 
  
 ![Detailed News](3.png)
