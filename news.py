@@ -1,27 +1,29 @@
+from flask import Flask, jsonify, send_file, request
 import requests
 
+app = Flask(__name__)
 
-everything_url = "https://newsapi.org/v2/everything"
+API_KEY = "79feb210682a4a0bb34a914858968be2"
+EVERYTHING_URL = "https://newsapi.org/v2/everything"
 
-api_key = "<You must your api key.>"
+@app.route("/")
+def home():
+    return send_file("index.html")  # templates yok
 
+@app.route("/api/haberler")
+def haberler():
+    query = request.args.get("q", "futbol")  # default 'futbol'
+    try:
+        response = requests.get(EVERYTHING_URL, params={
+            "apiKey": API_KEY,
+            "q": query,
+            "language": "tr",
+            "sortBy": "publishedAt"
+        })
+        data = response.json()
+        return jsonify(data.get("articles", []))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-
-
-response2 = requests.get(everything_url, params={
-    "apiKey": api_key,
-    "q": "futbol",
-    "language": "tr",
-    "sortBy": "publishedAt"
-})
-
-
-
-
-haberler2 = response2.json()["articles"]
-
-for i in haberler2:
-     print(i["source"]["name"])
-     print(i["title"])
-     print(i["url"])
-     print("-------------------------------------------------------------")
+if __name__ == "__main__":
+    app.run(debug=True)

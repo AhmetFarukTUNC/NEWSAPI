@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rengarenk Haberler</title>
+<style>
+/* Genel Ayarlar */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(to right, #ffecd2, #fcb69f);
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(90deg, #ff6a00, #ee0979);
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#arama {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#arama input {
+    width: 300px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ff6a00;
+    font-size: 16px;
+    outline: none;
+}
+
+#arama button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: #ee0979;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#arama button:hover {
+    background: #ff6a00;
+}
+
+#haberler {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.haber {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.haber:hover {
+    transform: translateY(-8px) rotate(-1deg);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.haber img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.haber .icerik {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.haber h3 {
+    font-size: 20px;
+    margin: 0 0 10px;
+    color: #ff6a00;
+}
+
+.haber p {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.haber a {
+    display: inline-block;
+    text-decoration: none;
+    background: #ee0979;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.haber a:hover {
+    background: #ff6a00;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #222;
+    color: white;
+    margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    🌈 Fantastic News
+</header>
+
+<div id="arama">
+    <input type="text" id="query" placeholder="Haber ara...">
+    <button onclick="haberleriGetir()">Ara</button>
+</div>
+
+<main>
+    <div id="haberler"></div>
+</main>
+
+<footer>
+    © 2025 Haberler Portalı | Tüm Hakları Saklıdır
+</footer>
+
+<script>
+async function haberleriGetir() {
+    const q = document.getElementById("query").value || "haber";
+    const haberlerDiv = document.getElementById("haberler");
+    haberlerDiv.innerHTML = "<p style='grid-column:1/-1;text-align:center;'>Yükleniyor...</p>";
+    
+    try {
+        const res = await fetch(`/api/haberler?q=${encodeURIComponent(q)}`);
+        const text = await res.text();  
+        let data;
+        try { data = JSON.parse(text); } 
+        catch { 
+            console.error("JSON değil, gelen veri:", text);
+            haberlerDiv.innerHTML = "<p style='grid-column:1/-1;text-align:center;'>Haberler yüklenirken hata oluştu.</p>";
+            return;
+        }
+
+        if (!Array.isArray(data)) {
+            console.error("Beklenen JSON dizisi gelmedi:", data);
+            haberlerDiv.innerHTML = "<p style='grid-column:1/-1;text-align:center;'>Haberler yüklenirken hata oluştu.</p>";
+            return;
+        }
+
+        haberlerDiv.innerHTML = "";
+        data.forEach(haber => {
+            const imgSrc = haber.urlToImage ? haber.urlToImage : "https://via.placeholder.com/300x180?text=Resim+Yok";
+            const div = document.createElement("div");
+            div.className = "haber";
+            div.innerHTML = `
+                <img src="${imgSrc}" alt="Haber resmi">
+                <div class="icerik">
+                    <h3>${haber.title || ''}</h3>
+                    <p>${haber.description || ''}</p>
+                    <a href="${haber.url}" target="_blank">Habere Git</a>
+                </div>
+            `;
+            haberlerDiv.appendChild(div);
+        });
+
+    } catch (err) {
+        console.error("Hata:", err);
+        haberlerDiv.innerHTML = "<p style='grid-column:1/-1;text-align:center;'>Haberler yüklenirken hata oluştu.</p>";
+    }
+}
+
+// Sayfa açıldığında otomatik yükle
+haberleriGetir();
+</script>
+
+</body>
+</html>
