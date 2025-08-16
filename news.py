@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-API_KEY = "79feb210682a4a0bb34a914858968be2"
+API_KEY = "<YOU CAN API KEY HERE THAT TOOK FROM NEWSAPİ WEBSİTE>"
 EVERYTHING_URL = "https://newsapi.org/v2/everything"
 
 @app.route("/")
